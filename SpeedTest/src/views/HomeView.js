@@ -8,7 +8,8 @@ class HomeView extends Component {
         this.state = {
             totalSize: 0,
             progressDownload : 0,
-            progressUpload : 0
+            progressUpload: 0,
+            speed: null
         };
         this.handleGet = this.handleGet.bind(this);
         this.handlePost = this.handlePost.bind(this);
@@ -28,9 +29,7 @@ class HomeView extends Component {
         }).then(() => {
             var end = Date.now();
             var elapsed = (end - start) /1000; 
-            console.log('elapsed ' + elapsed + 's'); // 1000ms = 1s 
-            console.log('size ' + this.state.totalSize + 'mb');
-            console.log(this.state.totalSize / elapsed * 8); //mbps
+            this.setState({ speed: this.state.totalSize / elapsed * 8 });
         })
         .catch(function (error) {
             console.log('error' + error);
@@ -48,13 +47,14 @@ class HomeView extends Component {
     }
     
     render() {
-        const { progressDownload } = this.state;
+        const { progressDownload, speed} = this.state;
 
         return (
             <div>
-                <Line percent={progressDownload} strokeWidth="4" strokeColor="#3FC7FA" />
-                <button onClick={this.handleGet}>Get Resource</button>
-                <button onClick={this.handlePost}>Post</button>
+                <Line percent={progressDownload} strokeWidth="1" strokeColor="#3FC7FA" />
+                <button onClick={this.handleGet}>Tester votre vitesse</button>
+                {/*<button onClick={this.handlePost}>Post</button>*/}
+                {speed ? <p>votre vitesse est de {speed} mbps</p>: null}
             </div>
         );
     }

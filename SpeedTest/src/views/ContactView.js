@@ -4,11 +4,10 @@ class ContactView extends Component {
     render() {
         return (
             <div>
-                <h2>GOT QUESTIONS?</h2>
-                <p>The easiest thing to do is post on our <a href="http://forum.kirupa.com">forums</a>.</p>
+                <h2>Des questions?</h2>
+                <p>Faites le 297.</p>
             </div>
         );
     }
 }
-
 export default ContactView;

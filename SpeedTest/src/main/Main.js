@@ -2,7 +2,6 @@
 import { Route, NavLink, HashRouter } from "react-router-dom";
 
 import HomeView from "../views/HomeView";
-import StuffView from "../views/StuffView";
 import ContactView from "../views/ContactView";
 
 class Main extends Component {
@@ -10,15 +9,13 @@ class Main extends Component {
         return (
             <HashRouter>
                 <div>
-                    <h1>Simple SPA</h1>
+                    <h1>Speed Test Medial</h1>
                     <ul className="header">
-                        <li><NavLink to="/">Home</NavLink></li>
-                        <li><NavLink to="/stuff">Stuff</NavLink></li>
+                        <li><NavLink to="/">Tester votre vitesse</NavLink></li>
                         <li><NavLink to="/contact">Contact</NavLink></li>
                     </ul>
                     <div className="content">
                         <Route exact path="/" component={HomeView} />
-                        <Route path="/stuff" component={StuffView} />
                         <Route path="/contact" component={ContactView} />
                     </div>
                 </div>

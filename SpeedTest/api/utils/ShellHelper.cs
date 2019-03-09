@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
 
 namespace SpeedTest.api.utils
 {
@@ -8,9 +7,8 @@ namespace SpeedTest.api.utils
     /// </summary>
     public static class ShellHelper
     {
-        public static void CreateDummy(string webroot)
+        public static void CreateDummy(string file)
         {
-            var file = Path.Combine(webroot, "test.jpg");
             using (var fs = new FileStream(file, FileMode.CreateNew))
             {
                 fs.Seek(50L * 1024 * 1024, SeekOrigin.Begin);

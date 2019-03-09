@@ -77,7 +77,7 @@ namespace SpeedTest
             var testFile = Path.Combine(WebRootPath, "test.jpg");
             if (!File.Exists(testFile))
             {
-                ShellHelper.CreateDummy(WebRootPath);
+                ShellHelper.CreateDummy(testFile);
             }
         }
     }

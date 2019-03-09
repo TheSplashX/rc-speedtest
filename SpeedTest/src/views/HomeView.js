@@ -18,22 +18,26 @@ class HomeView extends Component {
         this.handleStart = this.handleStart.bind(this);
     }
 
-    doDownload() {
-        var start = Date.now(), elapsed, end, totalSize = 0;
-        axios.get('test.jpg?n=' + Math.random(), {
+    async doDownload() {
+        let start = Date.now();
+        console.log('beginning download test');
+        await axios.get('test.jpg?n=' + Math.random(), {
             onDownloadProgress: (progressEvent) => {
-                this.setState({ totalSize: progressEvent.total / 1000000 });
-                this.setState({ progressDownload: progressEvent.loaded / progressEvent.total * 100 });
+                asyncSetState(this)({ totalSize: progressEvent.total / 1000000 });
+                asyncSetState(this)({ progressDownload: progressEvent.loaded / progressEvent.total * 100 });
             }
         }).then(() => {
-            var end = Date.now();
-            var elapsed = (end - start) / 1000;
-            this.setState({ speed: this.state.totalSize / elapsed * 8 });
-            this.setState({ working: false });
+            let end = Date.now();
+            let elapsed = (end - start) / 1000;
+            asyncSetState(this)({ speed: this.state.totalSize / elapsed * 8 });
+            console.log('download speed : ' + this.state.speed + 'mbps');
+            asyncSetState(this)({ working: false });
+            console.log('finished download test');
         })
         .catch(function (error) {
             console.log('error' + error);
         });
+        await delay(1000);
     }
 
     doUpload() {
@@ -72,6 +76,7 @@ class HomeView extends Component {
         }
         await asyncSetState(this)({ working: true });
         await this.doPing();
+        await this.doDownload();
         await asyncSetState(this)({ working: false });
     }
     
@@ -83,7 +88,7 @@ class HomeView extends Component {
                 <Line percent={progressDownload} strokeWidth="1" strokeColor="#3FC7FA" />
                 <button onClick={this.handleStart}>Tester votre vitesse</button>
                 {pingTime ? <p>votre PING est {Math.round(pingTime)} millisecondes</p> : null }
-                {speed ? <p>votre vitesse est de {speed} mbps</p>: null}
+                {speed ? <p>votre vitesse est de téléchargement est de {Math.round(speed)} mbps</p>: null}
             </div>
         );
     }

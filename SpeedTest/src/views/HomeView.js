@@ -19,35 +19,37 @@ class HomeView extends Component {
     }
 
     async doDownload() {
-        let start = Date.now();
+        let start = Date.now(), file;
         console.log('beginning download test');
         await axios.get('test.jpg?n=' + Math.random(), {
             onDownloadProgress: (progressEvent) => {
                 asyncSetState(this)({ totalSize: progressEvent.total / 1000000 });
                 asyncSetState(this)({ progressDownload: progressEvent.loaded / progressEvent.total * 100 });
             }
-        }).then(() => {
+        }).then((response) => {
             let end = Date.now();
             let elapsed = (end - start) / 1000;
             asyncSetState(this)({ speed: this.state.totalSize / elapsed * 8 });
             console.log('download speed : ' + this.state.speed + 'mbps');
             asyncSetState(this)({ working: false });
             console.log('finished download test');
+            file = response.data;
         })
         .catch(function (error) {
             console.log('error' + error);
         });
         await delay(1000);
+        return file;
     }
 
-    doUpload() {
-                //axios.post('test', 'none')
-        //    .then(function (response) {
-        //        console.log(response);
-        //    })
-        //    .catch(function (error) {
-        //        console.log(error);
-        //    });
+    async doUpload() {
+        axios.post('http://lecampus.com/', 'none')
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
 
     async doPing() {
@@ -76,7 +78,7 @@ class HomeView extends Component {
         }
         await asyncSetState(this)({ working: true });
         await this.doPing();
-        await this.doDownload();
+        var file = await this.doDownload();
         await asyncSetState(this)({ working: false });
     }
     

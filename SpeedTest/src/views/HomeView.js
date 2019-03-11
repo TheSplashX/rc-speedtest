@@ -7,20 +7,29 @@ import { delay, asyncSetState } from '../components/utils';
 class HomeView extends Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = this.initialState;
+        this.resetBuilder = this.resetBuilder.bind(this);
+        this.handleStart = this.handleStart.bind(this);
+    }
+
+    get initialState() {
+        return {
             working: false,
             doingPing: false,
             doingDownload: false,
             doingUpload: false,
             totalSize: 0,
-            progressDownload : 0,
+            progressDownload: 0,
             progressUpload: 0,
             downloadSpeed: null,
             uploadSpeed: null,
             pingTime: null,
             file: null
         };
-        this.handleStart = this.handleStart.bind(this);
+    }
+
+    async resetBuilder() {
+        asyncSetState(this)(this.initialState);
     }
 
     async doDownload() {
@@ -100,6 +109,8 @@ class HomeView extends Component {
         if (this.state.working) {
             return;
         }
+        await this.resetBuilder(); // reset the state of this view
+
         await asyncSetState(this)({ working: true });
 
         await this.doPing();

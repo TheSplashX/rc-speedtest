@@ -6,13 +6,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using SpeedTest.api.utils;
 using System.IO;
 
 namespace SpeedTest
 {
     public class Startup
     {
-        public static string ConnectionString { get; private set; }
+
+        private string WebRootPath;
 
         public IConfiguration Configuration { get; set; }
 
@@ -44,6 +46,7 @@ namespace SpeedTest
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            WebRootPath = env.WebRootPath;
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -59,14 +62,23 @@ namespace SpeedTest
                 .AddEnvironmentVariables();
                 Configuration = builder.Build();
 
-            ConnectionString = Configuration["ConnectionString"];
-
             app.UseCors("SiteCorsPolicy");
 
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseMvc();
+
+            CheckIfDummyIsThere();
+        }
+
+        private void CheckIfDummyIsThere()
+        {
+            var testFile = Path.Combine(WebRootPath, "test.jpg");
+            if (!File.Exists(testFile))
+            {
+                ShellHelper.CreateDummy(testFile);
+            }
         }
     }
 }

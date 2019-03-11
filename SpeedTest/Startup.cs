@@ -53,7 +53,7 @@ namespace SpeedTest
             }
             else
             {
-                app.UseHsts();
+                //app.UseHsts();
             }
 
             var builder = new ConfigurationBuilder()

@@ -28,6 +28,7 @@ class HomeView extends Component {
         await asyncSetState(this)({ doingDownload: true });
         console.log('beginning download test');
         await axios.get('test.jpg?n=' + Math.random(), {
+            responseType: 'blob',
             onDownloadProgress: (progressEvent) => {
                 asyncSetState(this)({ totalSize: progressEvent.total / 1000000 });
                 asyncSetState(this)({ progressDownload: progressEvent.loaded / progressEvent.total * 100 });
@@ -37,7 +38,7 @@ class HomeView extends Component {
             let elapsed = (end - start) / 1000;
             asyncSetState(this)({ downloadSpeed: this.state.totalSize / elapsed * 8 });
             console.log('download speed : ' + this.state.downloadSpeed + 'mbps');
-            asyncSetState(this)({ file: response.data });
+            asyncSetState(this)({ file: new Blob([response.data]) });
             asyncSetState(this)({ doingDownload: false });
             console.log('finished download test');
         })

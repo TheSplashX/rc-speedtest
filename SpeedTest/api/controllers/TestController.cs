@@ -3,14 +3,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SpeedTest.Controllers
 {
+    [Controller]
     [Route("api/[controller]")]
-    [ApiController]
     public class TestController : ControllerBase
     {
-        [HttpPost]
-        public IActionResult Post([FromBody] IFormFile file)
+        [HttpGet]
+        public IActionResult Get()
         {
-            return Ok( new { file.Length } );
+            return Ok();
+        }
+
+        [HttpPost]
+        [DisableRequestSizeLimit]
+        public IActionResult Upload(IFormFile file)
+        {
+            return Ok();
         }
     }
 }

@@ -84,7 +84,7 @@ class HomeView extends Component {
     }
 
     async doPing() {
-        let p = new Ping(), total = 0, occurence = 0, address = 'http://intranet.quebecsvr.local/';
+        let p = new Ping(), total = 0, occurence = 0, address = 'http://speedtest.quebecsvr.local/';
         await asyncSetState(this)({ doingPing: true });
         console.log('beginning ping test to address ' + address);
         async function loop() {

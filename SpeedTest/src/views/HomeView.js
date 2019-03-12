@@ -36,7 +36,7 @@ class HomeView extends Component {
         let start = Date.now();
         await asyncSetState(this)({ doingDownload: true });
         console.log('beginning download test');
-        await axios.get('test.jpg?n=' + Math.random(), {
+        await axios.get('/img/test.jpg?n=' + Math.random(), {
             responseType: 'blob',
             onDownloadProgress: (progressEvent) => {
                 asyncSetState(this)({ totalSize: progressEvent.total / 1000000 });
@@ -84,16 +84,16 @@ class HomeView extends Component {
     }
 
     async doPing() {
-        let p = new Ping(), total = 0, occurence = 0;
+        let p = new Ping(), total = 0, occurence = 0, address = 'http://intranet.quebecsvr.local/';
         await asyncSetState(this)({ doingPing: true });
-        console.log('beginning ping test');
+        console.log('beginning ping test to address ' + address);
         async function loop() {
             for (let i = 0; i < 6; i++) {
-                p.ping('http://lecampus.com/', (err, data) => {
+                p.ping(address, (err, data) => {
                     if (!err && !isNaN(data) && i > 0 ) {
                         occurence++;
                         total += data;  
-                        console.log('ping test #'+ i +' of ' + data + 'ms');
+                        console.log('ping test #' + i + ' of ' + data + 'ms');
                     }
                 });
                 await delay(1000);
